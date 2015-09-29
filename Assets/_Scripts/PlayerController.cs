@@ -25,37 +25,38 @@ public class PlayerController : MonoBehaviour
     // Check input method, private
     private void _CheckInput()
     {
-        _newPosition = gameObject.GetComponent<Transform>().position;
-
-        if ((this._newPosition.x + 33f ) <= this.boundary.xMin)          // half the size of the sprite ( 65 / 2) since position.x is from center of sprite
-        {
-            Debug.Log("left boundary passed");
-
-            this._newPosition.x = this.boundary.xMin + 33f;
-        }
-
-        if ((this._newPosition.x + 33f) >= this.boundary.xMax)
-        {
-            Debug.Log("right boundary passed");
-            this._newPosition.x = this.boundary.xMax + 33f;
-        }
-
-        Debug.Log(this._newPosition);
-        
+        this._newPosition = gameObject.GetComponent<Transform>().position;  // current position
 
         // Check for right arrow press
         if ((Input.GetAxis("Horizontal")) > 0)
         {
-            _newPosition.x += move.x;
-            gameObject.GetComponent<Transform>().position = _newPosition;
+            this._newPosition.x += this.move.x;   // add move value to current position
+           // gameObject.GetComponent<Transform>().position = _newPosition;
         }
 
         // check for left arrow press
         if (Input.GetAxis("Horizontal") < 0)
         {
-            _newPosition.x -= move.x;
-            gameObject.GetComponent<Transform>().position = _newPosition;
-            Debug.Log("move left");
+            this._newPosition.x -= this.move.x;   // subtract move value to current position
+           // gameObject.GetComponent<Transform>().position = _newPosition;
+            
         }
+
+        
+        // boundary check
+        if ((this._newPosition.x) <= this.boundary.xMin)          // half the size of the sprite ( 65 / 2) since position.x is from center of sprite
+        {
+            this._newPosition.x = this.boundary.xMin;
+        }
+
+        if ((this._newPosition.x) >= this.boundary.xMax)
+        {
+            this._newPosition.x = this.boundary.xMax;
+        }
+
+        gameObject.GetComponent<Transform>().position = this._newPosition;
+
+
+
     }
 }
