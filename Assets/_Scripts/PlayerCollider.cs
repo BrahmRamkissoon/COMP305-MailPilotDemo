@@ -15,7 +15,7 @@ public class PlayerCollider : MonoBehaviour {
 
     // PRIVATE INSTANCE VARIABLES +++++++++++++++++++++++++
     private AudioSource[] _audioSources;    // array of audio sources
-    private AudioSource _cloudAudioSource, _islandAudioSource;
+    private AudioSource _cloudAudioSource, _islandAudioSource, _endAudioSource;
   
 
     private int _score = 0;
@@ -30,6 +30,7 @@ public class PlayerCollider : MonoBehaviour {
         this._audioSources = this.GetComponents<AudioSource>(); // get the array of audio sources
         this._cloudAudioSource = this._audioSources[1];     // reference audio for cloud
 	    this._islandAudioSource = this._audioSources[2];    // reference audio for island
+	    this._endAudioSource = this._audioSources[3];       // referendc audio for endgame
 
         //this._highScore = GameObject.FindWithTag("HighScoreController").GetComponent("HighScoreScript");
         this.gameOverLabel.enabled = false;
@@ -61,7 +62,6 @@ public class PlayerCollider : MonoBehaviour {
             {
                 this._EndGame();    // 
             }
-            
         }
         this._ScoreUpdate();
     }
@@ -78,12 +78,15 @@ public class PlayerCollider : MonoBehaviour {
     {
         if ( this._lives <= 0 )       // end game if life = 0
         {
+            this._endAudioSource.Play();    // play end audio before destroy gameObject, doesnt work player detroyed too fast
+            // recommendation to setup a scoreboard controller using reference to player , note i didnt bother to load an audio source for endgame.
             Destroy(gameObject);
             this.scoreLabel.enabled = false;
             this.livesLabel.enabled = false;
             this.gameOverLabel.enabled = true;
             this.finalScoreLabel.enabled = true;
             this.finalScoreLabel.text = "Score: " + this._score;
+            
         }
     }
 }
